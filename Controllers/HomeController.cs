@@ -12,7 +12,7 @@ namespace ExampleApp.Controllers
         public HomeController(IRepository repo, IConfiguration config)
         {
             repository = repo;
-            message = config["MESSAGE"] ?? "Essential Docker";
+            message = $"Host ({config["HOSTNAME"]})";
         }
 
         public IActionResult Index()

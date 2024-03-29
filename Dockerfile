@@ -18,4 +18,7 @@ RUN dotnet publish "./ExampleApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ExampleApp.dll"]
+COPY wait-for-it /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+ENV WAITHOST=mysql WAITPORT=3306
+ENTRYPOINT ./wait-for-it.sh $WAITHOST:$WAITPORT --timeout=0 && exec dotnet ExampleApp.dll
